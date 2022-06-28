@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  server:
+    image: "corrector"
+    container_name: "corrector"
+    build:
+      context: ./
+      dockerfile: ./Dockerfile-local
+    ports:
+      - 8000:8000

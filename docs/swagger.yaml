@@ -1,0 +1,70 @@
+basePath: /
+definitions:
+  corrector.Request:
+    properties:
+      texts:
+        items:
+          type: string
+        type: array
+    type: object
+  corrector.Response:
+    properties:
+      texts:
+        items:
+          type: string
+        type: array
+      version:
+        type: string
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for Corrector application
+  title: Corrector App API
+  version: "1.0"
+paths:
+  /corrector:
+    post:
+      consumes:
+      - application/json
+      description: Get answer by webhook corrector command
+      operationId: corrector-request
+      parameters:
+      - description: Body request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/corrector.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/corrector.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/corrector.Response'
+      summary: Corrector
+      tags:
+      - Corrector
+swagger: "2.0"
