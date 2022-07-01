@@ -26,7 +26,7 @@ func (h *Handler) correctorRequest(c *gin.Context) {
 		return
 	}
 
-	resp, err := h.services.Corrector.CheckSpell(req)
+	resp, err := h.services.Corrector.CheckSpell(c, req)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

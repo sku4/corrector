@@ -1,7 +1,7 @@
 package corrector
 
 import (
-	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/sku4/corrector/internal/repository"
 	"github.com/sku4/corrector/models/corrector"
 	"strings"
@@ -10,20 +10,18 @@ import (
 //go:generate mockgen -source=corrector.go -destination=mocks/corrector.go
 
 type Service struct {
-	ctx       context.Context
 	corrector repository.Corrector
 }
 
-func NewService(ctx context.Context, corrector repository.Corrector) *Service {
+func NewService(corrector repository.Corrector) *Service {
 	return &Service{
-		ctx:       ctx,
 		corrector: corrector,
 	}
 }
 
-func (s *Service) CheckSpell(req corrector.Request) (correctorResp corrector.Response, err error) {
+func (s *Service) CheckSpell(ctx *gin.Context, req corrector.Request) (correctorResp corrector.Response, err error) {
 	correctorResp = *corrector.NewResponse()
-	spellerResp, err := s.corrector.CheckSpell(req.Texts)
+	spellerResp, err := s.corrector.CheckSpell(ctx, req.Texts)
 
 	correctorTexts := make([]string, len(req.Texts))
 	for i, text := range req.Texts {

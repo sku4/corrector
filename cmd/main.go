@@ -37,8 +37,8 @@ func main() {
 	ctx = log.ContextWithLogger(ctx, logger)
 	defer stop()
 
-	repos := repository.NewRepository(ctx)
-	services := service.NewService(ctx, repos)
+	repos := repository.NewRepository()
+	services := service.NewService(repos)
 	handlers := handler.NewHandler(ctx, services)
 
 	quit := make(chan os.Signal, 1)

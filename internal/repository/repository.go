@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/sku4/corrector/internal/repository/speller"
 	model "github.com/sku4/corrector/models/speller"
 )
@@ -9,15 +9,15 @@ import (
 //go:generate mockgen -source=repository.go -destination=mocks/repository.go
 
 type Corrector interface {
-	CheckSpell(texts []string) (model.Response, error)
+	CheckSpell(ctx *gin.Context, texts []string) (model.Response, error)
 }
 
 type Repository struct {
 	Corrector
 }
 
-func NewRepository(ctx context.Context) *Repository {
+func NewRepository() *Repository {
 	return &Repository{
-		Corrector: speller.NewCorrector(ctx),
+		Corrector: speller.NewCorrector(),
 	}
 }
