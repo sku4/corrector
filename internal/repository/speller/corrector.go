@@ -2,7 +2,6 @@ package speller
 
 import (
 	"context"
-	"github.com/sku4/corrector/configs"
 	model "github.com/sku4/corrector/models/speller"
 	"github.com/sku4/corrector/pkg/speller"
 )
@@ -11,9 +10,9 @@ type Corrector struct {
 	*speller.Client
 }
 
-func NewCorrector(ctx context.Context, cfg *configs.Config) *Corrector {
+func NewCorrector(ctx context.Context) *Corrector {
 	return &Corrector{
-		Client: speller.NewClient(ctx, cfg),
+		Client: speller.NewClient(ctx),
 	}
 }
 

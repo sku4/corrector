@@ -33,22 +33,24 @@ func main() {
 		sugar.Fatalf("error init config: %s", err.Error())
 	}
 
-	ctx := log.ContextWithLogger(context.Background(), logger)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	ctx = log.ContextWithLogger(ctx, logger)
+	defer stop()
 
-	repos := repository.NewRepository(ctx, cfg)
+	repos := repository.NewRepository(ctx)
 	services := service.NewService(ctx, repos)
 	handlers := handler.NewHandler(ctx, services)
 
+	quit := make(chan os.Signal, 1)
 	srv := new(app.Server)
 	go func() {
 		if err := srv.Run(cfg.Port, handlers.InitRoutes()); err != nil {
 			sugar.Fatalf("error occured while running http server: %s", err.Error())
+			quit <- nil
 		}
 	}()
 
 	sugar.Info("App Started")
-
-	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 

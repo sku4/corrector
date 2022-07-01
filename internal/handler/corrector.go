@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sku4/corrector/models/corrector"
-	"github.com/sku4/corrector/pkg/log"
 	"net/http"
 )
 
@@ -22,16 +21,14 @@ import (
 func (h *Handler) correctorRequest(c *gin.Context) {
 	var req corrector.Request
 
-	l := log.LoggerFromContext(h.ctx)
-
 	if err := c.BindJSON(&req); err != nil {
-		newErrorResponse(c, l, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	resp, err := h.services.Corrector.CheckSpell(req)
 	if err != nil {
-		newErrorResponse(c, l, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 

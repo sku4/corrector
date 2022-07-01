@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/sku4/corrector/configs"
 	"github.com/sku4/corrector/models/speller"
 	"github.com/sku4/corrector/pkg/log"
 	"io/ioutil"
@@ -16,14 +15,12 @@ import (
 const serviceURL = "http://speller.yandex.net/services/spellservice.json/checkTexts"
 
 type Client struct {
-	ctx    context.Context
-	config *configs.Config
+	ctx context.Context
 }
 
-func NewClient(ctx context.Context, cfg *configs.Config) *Client {
+func NewClient(ctx context.Context) *Client {
 	return &Client{
-		ctx:    ctx,
-		config: cfg,
+		ctx: ctx,
 	}
 }
 

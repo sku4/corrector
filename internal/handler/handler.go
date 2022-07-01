@@ -25,7 +25,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	list := router.Group("/corrector")
+	list := router.Group("/corrector", h.logger)
 	{
 		list.POST("/", h.correctorRequest)
 	}
